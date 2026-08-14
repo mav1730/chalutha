@@ -68,15 +68,21 @@
     if (location.hash === next || (!location.hash && !next)) return;
     state.ignoreHash = true;
     location.hash = next.replace(/^#/, "");
-    setTimeout(() => { state.ignoreHash = false; }, 0);
+    setTimeout(() => { state.ignoreHash = false; }, 50);
+  }
+
+  function liveTracks(theme) {
+    const all = (theme && theme.tracks) || [];
+    const live = all.filter((t) => !state.dead[t.id]);
+    return live.length ? live : all;
   }
 
   function catalogLen(theme) {
-    return theme.tracks.reduce((s, t) => s + t.dur, 0) || 1;
+    return liveTracks(theme).reduce((s, t) => s + t.dur, 0) || 1;
   }
 
   function radioNow(theme, epoch) {
-    const tracks = theme.tracks;
+    const tracks = liveTracks(theme);
     const total = catalogLen(theme);
     let elapsed = Math.floor((Date.now() - epoch) / 1000) % total;
     if (elapsed < 0) elapsed = 0;
@@ -165,9 +171,10 @@
   }
 
   function nextQuote(reset) {
-    const qs = state.theme.quotes;
-    const i = reset ? 0 : Math.floor(Math.random() * qs.length);
     const box = $("quoteBox");
+    const qs = (state.theme && state.theme.quotes) || [];
+    if (!qs.length || !box) return;
+    const i = reset ? 0 : Math.floor(Math.random() * qs.length);
     const apply = () => {
       $("quoteText").textContent = `“${qs[i].text}”`;
       $("quoteWho").textContent = qs[i].who;
@@ -242,8 +249,10 @@
   }
 
   function tickRules() {
+    if (state.view !== "room") return;
     const t = state.theme;
     const pos = radioNow(t, state.epoch);
+    if (!t.coinTimer) $("coinWidget").classList.add("hidden");
     if (t.coinTimer) {
       const left = t.coinTimer - (pos.elapsed % t.coinTimer);
       $("coinLeft").textContent = pad(left);
@@ -256,12 +265,16 @@
     if (t.chairs) $("chairLine").textContent = `You are number ${2 + (pos.index % 4)} for PC-01`;
     if (t.clipSeconds) $("roomTune").textContent = `Now demoing · ${pos.track.title}`;
     if (t.powerCut) {
-      const pulse = pos.elapsed % 52;
-      $("blackout").classList.toggle("is-on", pulse < 3 && state.playing);
+      const pulse = pos.elapsed % 70;
+      $("blackout").classList.toggle("is-on", pulse >= 60 && pulse < 63 && state.playing);
+    } else {
+      $("blackout").classList.remove("is-on");
     }
     if (t.bumper) {
       const nearEnd = pos.track.dur - pos.offset < 8 && pos.offset > 10;
       $("bumper").classList.toggle("is-on", nearEnd && state.playing);
+    } else {
+      $("bumper").classList.remove("is-on");
     }
   }
 
@@ -279,8 +292,7 @@
       $("trackMemory").textContent = track.memory || "";
     }
     $("cover").style.backgroundImage = `url('https://img.youtube.com/vi/${track.id}/hqdefault.jpg')`;
-    if (announce && track.id !== state.lastTrackId && track.memory) {
-      state.lastTrackId = track.id;
+    if (announce && state.playing && track.id !== state.lastTrackId && track.memory) {
       toast(track.memory);
     }
     state.lastTrackId = track.id;
@@ -335,8 +347,8 @@
     const pos = radioNow(state.theme, state.epoch);
     try {
       state.player = new YT.Player("ytMount", {
-        height: "124",
-        width: "220",
+        height: "158",
+        width: "280",
         videoId: pos.track.id,
         playerVars: {
           autoplay: 0,
@@ -408,8 +420,23 @@
     if (state.view === "room") bootPlayer();
   };
 
+  function cueCurrent(autoplay) {
+    if (!state.player || !state.ready) return;
+    const pos = radioNow(state.theme, state.epoch);
+    try {
+      state.player.setVolume(vol());
+      state.lastLoadAt = Date.now();
+      state.player.loadVideoById({
+        videoId: pos.track.id,
+        startSeconds: Math.max(0, Math.floor(pos.offset))
+      });
+      if (autoplay) state.player.playVideo();
+    } catch (e) {}
+  }
+
   function tuneIn() {
     if (state.tuning) return;
+    state.wantPlay = !state.playing;
     if (!state.player || !state.ready) {
       state.tuneTries = (state.tuneTries || 0) + 1;
       if (state.tuneTries > 10) {
@@ -424,6 +451,7 @@
     }
     state.tuneTries = 0;
     if (state.playing) {
+      state.wantPlay = false;
       try { state.player.pauseVideo(); } catch (e) {}
       setPlaying(false);
       return;
@@ -446,6 +474,11 @@
 
   function enter(id, fromPeer) {
     const t = themeById(id);
+    if (!t || t.id !== id) {
+      show("gali");
+      writeHash("", state.jamId);
+      return;
+    }
     if (state.view === "room" && state.theme.id === t.id) return;
     state.lastTrackId = "";
     state.theme = t;
@@ -455,6 +488,10 @@
     show("room");
     startLoops();
     if (window.YT && window.YT.Player) bootPlayer();
+    if (state.ready) {
+      try { state.player.setVolume(vol()); } catch (e) {}
+      cueCurrent(!!state.wantPlay);
+    }
     if (!fromPeer) broadcast({ type: "room", id: t.id, name: state.name });
   }
 
@@ -464,6 +501,7 @@
     paintGali();
     $("blackout").classList.remove("is-on");
     $("bumper").classList.remove("is-on");
+    state.wantPlay = false;
     if (state.playing && state.player) {
       try { state.player.pauseVideo(); } catch (e) {}
       setPlaying(false);
@@ -701,6 +739,11 @@
       if (state.view === "room") leave(true);
       return;
     }
+    if (themeById(route.theme).id !== route.theme) {
+      if (state.view === "room") leave(true);
+      else show("gali");
+      return;
+    }
     if (route.jam && route.jam !== state.jamId) {
       state.jamId = route.jam;
       const parsed = parseInt(route.jam, 36);
@@ -772,7 +815,7 @@
       if ($("modal").classList.contains("is-on")) closeModal();
       else if (state.view === "room") leave();
     }
-    if (e.code === "Space" && state.view === "room" && e.target === document.body) {
+    if (e.code === "Space" && state.view === "room" && !/input|textarea/i.test(e.target.tagName)) {
       e.preventDefault();
       tuneIn();
     }
@@ -794,6 +837,8 @@
   setInterval(paintGali, 30000);
   dust();
 
+  const bootRoute = parseHash();
+  const skipIntro = !!(bootRoute.theme && themeById(bootRoute.theme).id === bootRoute.theme);
   setTimeout(() => {
     $("intro").classList.add("is-gone");
     $("gali").classList.add("is-on");
@@ -805,10 +850,10 @@
       startJamNet();
     }
     if (route.theme && themeById(route.theme).id === route.theme) {
-      setTimeout(() => shutter(() => enter(route.theme, true)), 350);
+      enter(route.theme, true);
     } else {
       show("gali");
     }
-    if (!state.name) setTimeout(openNameModal, 800);
-  }, 1500);
+    if (!state.name && !route.theme) setTimeout(openNameModal, 600);
+  }, skipIntro ? 400 : 1400);
 })();

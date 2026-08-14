@@ -112,8 +112,7 @@ window.CHALU_THEMES = [
       { text: "Hello, kaun? … pehle yeh tune suno.", who: "Demo Nokia" }
     ],
     tracks: [
-      { id: "qoq8B8ThgEM", title: "Tujh Mein Rab Dikhta Hai", film: "RNBDJ", year: 2008, dur: 20, memory: "The 20 seconds India heard before anyone said hello." },
-      { id: "rap8SoUIPaw", title: "Dance Pe Chance", film: "RNBDJ", year: 2008, dur: 20, memory: "Missed call. You only needed the hook." }
+      { id: "qoq8B8ThgEM", title: "Tujh Mein Rab Dikhta Hai", film: "RNBDJ", year: 2008, dur: 20, memory: "The 20 seconds India heard before anyone said hello." }
     ]
   },
   {
