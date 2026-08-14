@@ -455,6 +455,16 @@ body.is-playing .cover { animation: vinyl 8s linear infinite; }
   text-overflow: ellipsis;
 }
 .track .sub { font-size: 11px; color: var(--mute); margin-top: 2px; }
+.track .memory {
+  margin-top: 5px;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--gold-2);
+  max-height: 2.8em;
+  overflow: hidden;
+}
 .bar-row {
   display: flex;
   align-items: center;

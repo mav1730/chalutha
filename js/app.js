@@ -22,7 +22,8 @@
     tuning: false,
     toastTimer: 0,
     ackAt: 0,
-    ignoreHash: false
+    ignoreHash: false,
+    lastTrackId: ""
   };
 
   function escapeHtml(s) {
@@ -265,13 +266,28 @@
     document.body.classList.toggle("is-playing", on);
   }
 
+  function paintTrack(track, announce) {
+    $("trackName").textContent = track.title;
+    if ($("trackMeta")) {
+      $("trackMeta").textContent = [track.film, track.year].filter(Boolean).join(" · ");
+    }
+    if ($("trackMemory")) {
+      $("trackMemory").textContent = track.memory || "";
+    }
+    $("cover").style.backgroundImage = `url('https://img.youtube.com/vi/${track.id}/hqdefault.jpg')`;
+    if (announce && track.id !== state.lastTrackId && track.memory) {
+      state.lastTrackId = track.id;
+      toast(track.memory);
+    }
+    state.lastTrackId = track.id;
+  }
+
   function tickRadio() {
     const pos = radioNow(state.theme, state.epoch);
-    $("trackName").textContent = pos.track.title;
+    paintTrack(pos.track, true);
     $("now").textContent = pad(pos.offset);
     $("end").textContent = pad(pos.track.dur);
     $("fill").style.width = `${Math.min(100, (pos.offset / pos.track.dur) * 100)}%`;
-    $("cover").style.backgroundImage = `url('https://img.youtube.com/vi/${pos.track.id}/hqdefault.jpg')`;
     $("playIcon").innerHTML = state.playing
       ? '<path d="M7 5h4v14H7zm6 0h4v14h-4z"/>'
       : '<path d="M8 5v14l11-7z"/>';
@@ -348,6 +364,7 @@
   function enter(id, fromPeer) {
     const t = themeById(id);
     if (state.view === "room" && state.theme.id === t.id) return;
+    state.lastTrackId = "";
     state.theme = t;
     localStorage.setItem("chalu-last", t.id);
     writeHash(t.id, state.jamId);

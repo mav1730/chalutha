@@ -17,18 +17,20 @@ Public rooms already share a frequency. A private booth just closes the door.
 
 ## The shops
 
-| Shop | Mix |
+Each room has its own forgotten reel — not the five songs everyone still plays.
+
+| Shop | What you actually hear |
 | --- | --- |
-| Deluxe Saloon | 90s counter radio |
-| STD / PCO | Long-distance ache |
-| Cyber Café '06 | Night-pack dance |
-| Lab PC-01 | Seventh period |
-| Caller Tune Shop | 20-second missed-call clips |
-| Chitrahaar | Sunday television, no skip |
-| Sleeper Berth 2 | Side-upper leak |
-| Xerox Uncle | Uncle FM |
-| Night Chemist | Soft, volume locked |
-| Generator Shaadi | Sangeet + power cuts |
+| Deluxe Saloon | *Tere Naam*, *O Jaana*, *Dil Ne Yeh Kaha*, *Aati Kya Khandala* |
+| STD / PCO | *Main Yahaan Hoon*, *Tere Naam (sad)*, *Kal Ho Naa Ho* |
+| Cyber Café '06 | *Koi Kahe Kehta Rahe*, *It's the Time to Disco*, *Pretty Woman* |
+| Lab PC-01 | *Jaane Kyon*, *You Are My Soniya*, *Mitwa* |
+| Caller Tune Shop | 20 seconds of *Ajab Si*, *Pehli Nazar*, *Kya Mujhe Pyaar Hai* |
+| Chitrahaar | *Lag Ja Gale*, *Jaadu Teri Nazar*, then *Tujhe Dekha Toh* |
+| Sleeper Berth 2 | *Kabhi Alvida Naa Kehna* leaking from the side-upper |
+| Xerox Uncle | *Ho Gaya Hai Tujhko* — the DDLJ song he actually plays |
+| Night Chemist | *Beete Lamhein* at 2am, fridge louder than KK |
+| Generator Shaadi | *Maahi Ve*, *Say Shava Shava*, then the lights die |
 
 Audio is streamed through YouTube’s official player from curated official uploads. The site does not host music files.
 
