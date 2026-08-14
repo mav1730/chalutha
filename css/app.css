@@ -54,13 +54,37 @@ input:focus { border-color: var(--gold); }
 }
 #dust { z-index: 17; }
 
-#ytMount {
-  position: fixed;
-  width: 1px; height: 1px;
-  left: -48px; top: -48px;
-  opacity: 0;
-  pointer-events: none;
+.radio-face {
+  position: relative;
+  width: 220px;
+  height: 124px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #070504;
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 0 1px rgba(232,211,164,.12);
 }
+.radio-face iframe,
+#ytMount,
+.radio-face > div {
+  width: 220px !important;
+  height: 124px !important;
+}
+.tune-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  background: rgba(8,5,3,.45);
+  font-family: var(--eng);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--gold-2);
+}
+body.is-playing .tune-hint { display: none; }
 
 .screen {
   position: fixed;
@@ -438,7 +462,8 @@ body.theme-chemist #room .bg { filter: saturate(.82); }
   backdrop-filter: blur(22px);
   box-shadow: 0 22px 50px rgba(0,0,0,.5), inset 0 1px 0 rgba(232,211,164,.15);
 }
-.cover {
+.cover { display: none; }
+.cover-legacy {
   width: 56px; height: 56px;
   border-radius: 14px;
   background: #111 center/cover no-repeat;
@@ -639,7 +664,12 @@ body.is-playing .icon.play { animation: glow 2.4s ease-in-out infinite; }
 @media (max-width: 720px) {
   .hero { padding-top: 5vh; }
   .shop { flex-basis: 200px; }
-  .player { padding: 10px; }
+  .player { padding: 10px; flex-wrap: wrap; }
+  .radio-face, .radio-face iframe, #ytMount, .radio-face > div {
+    width: 100% !important;
+    height: 160px !important;
+  }
+  .radio-face { width: 100%; height: 160px; }
   .quote p { font-size: 17px; }
   .booth { flex-direction: column; align-items: flex-start; }
 }

@@ -23,7 +23,11 @@
     toastTimer: 0,
     ackAt: 0,
     ignoreHash: false,
-    lastTrackId: ""
+    lastTrackId: "",
+    ready: false,
+    lastSeekAt: 0,
+    lastLoadAt: 0,
+    dead: {}
   };
 
   function escapeHtml(s) {
@@ -282,6 +286,10 @@
     state.lastTrackId = track.id;
   }
 
+  function vol() {
+    return state.theme.volumeLock || 80;
+  }
+
   function tickRadio() {
     const pos = radioNow(state.theme, state.epoch);
     paintTrack(pos.track, true);
@@ -292,44 +300,107 @@
       ? '<path d="M7 5h4v14H7zm6 0h4v14h-4z"/>'
       : '<path d="M8 5v14l11-7z"/>';
 
-    if (!state.player || !state.playing || !state.player.loadVideoById) return;
+    if (!state.ready || !state.playing || !state.player || !state.player.getPlayerState) return;
+    const st = state.player.getPlayerState();
+    if (st !== YT.PlayerState.PLAYING && st !== YT.PlayerState.BUFFERING) return;
+
     const data = state.player.getVideoData ? state.player.getVideoData() : {};
     if (data.video_id && data.video_id !== pos.track.id) {
-      state.player.loadVideoById({ videoId: pos.track.id, startSeconds: pos.offset });
-      if (state.theme.volumeLock) state.player.setVolume(state.theme.volumeLock);
+      if (Date.now() - state.lastLoadAt > 2500) {
+        state.lastLoadAt = Date.now();
+        state.player.loadVideoById({ videoId: pos.track.id, startSeconds: pos.offset });
+      }
       return;
     }
+    const dur = state.player.getDuration ? state.player.getDuration() : 0;
     const cur = state.player.getCurrentTime ? state.player.getCurrentTime() : 0;
-    if (Math.abs(cur - pos.offset) > 2.8) state.player.seekTo(pos.offset, true);
-    if (state.theme.volumeLock) state.player.setVolume(state.theme.volumeLock);
+    if (dur > 3 && cur > 0.4 && Math.abs(cur - pos.offset) > 6 && Date.now() - state.lastSeekAt > 5000) {
+      state.lastSeekAt = Date.now();
+      state.player.seekTo(pos.offset, true);
+    }
   }
 
   function bootPlayer() {
-    if (state.player || !(window.YT && window.YT.Player)) return;
+    if (state.player) return;
+    if (!(window.YT && window.YT.Player)) {
+      if (!document.querySelector('script[src*="iframe_api"]')) {
+        const s = document.createElement("script");
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(s);
+      }
+      return;
+    }
+    const mount = $("ytMount");
+    if (!mount) return;
     const pos = radioNow(state.theme, state.epoch);
     try {
       state.player = new YT.Player("ytMount", {
-        height: "1",
-        width: "1",
+        height: "124",
+        width: "220",
         videoId: pos.track.id,
         playerVars: {
-          autoplay: 0, controls: 0, enablejsapi: 1, playsinline: 1, rel: 0, origin: location.origin
+          autoplay: 0,
+          controls: 1,
+          disablekb: 0,
+          fs: 0,
+          iv_load_policy: 3,
+          modestbranding: 1,
+          playsinline: 1,
+          rel: 0,
+          enablejsapi: 1,
+          origin: location.origin,
+          widget_referrer: location.origin
         },
         events: {
-          onReady() {
-            if (state.theme.volumeLock) state.player.setVolume(state.theme.volumeLock);
+          onReady(e) {
+            state.ready = true;
+            const frame = document.querySelector(".radio-face iframe");
+            if (frame) {
+              frame.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture");
+              frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+            }
+            try {
+              e.target.unMute();
+              e.target.setVolume(vol());
+              if (state.wantPlay) e.target.playVideo();
+            } catch (err) {}
           },
           onStateChange(e) {
-            if (e.data === YT.PlayerState.PLAYING) setPlaying(true);
-            if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) setPlaying(false);
+            if (e.data === YT.PlayerState.PLAYING) {
+              setPlaying(true);
+              try { e.target.unMute(); e.target.setVolume(vol()); } catch (err) {}
+            }
+            if (e.data === YT.PlayerState.PAUSED) setPlaying(false);
+            if (e.data === YT.PlayerState.ENDED) setPlaying(false);
           },
-          onError() {
-            toast("This reel skipped. Next one is already on.");
+          onError(e) {
+            console.warn("yt error", e && e.data);
+            skipDead(e && e.data);
           }
         }
       });
     } catch (e) {
-      toast("Radio is warming up. Try Tune in again.");
+      state.player = null;
+      toast("Radio is warming up. Tap Tune in again.");
+    }
+  }
+
+  function skipDead(code) {
+    const tracks = state.theme.tracks.filter((t) => !state.dead[t.id]);
+    const pos = radioNow(state.theme, state.epoch);
+    state.dead[pos.track.id] = true;
+    const live = state.theme.tracks.filter((t) => !state.dead[t.id]);
+    if (!live.length) {
+      toast("This shop's reels are locked on YouTube. Try another door.");
+      setPlaying(false);
+      return;
+    }
+    const next = live[0];
+    toast("Skipped a locked reel.");
+    if (state.player && state.ready && Date.now() - state.lastLoadAt > 1500) {
+      state.lastLoadAt = Date.now();
+      state.player.loadVideoById({ videoId: next.id, startSeconds: 0 });
+      if (state.wantPlay) state.player.playVideo();
     }
   }
 
@@ -339,25 +410,37 @@
 
   function tuneIn() {
     if (state.tuning) return;
-    if (!state.player) {
+    if (!state.player || !state.ready) {
+      state.tuneTries = (state.tuneTries || 0) + 1;
+      if (state.tuneTries > 10) {
+        state.tuneTries = 0;
+        toast("YouTube didn't wake up. Refresh once, then tap Tune in.");
+        return;
+      }
       state.tuning = true;
       bootPlayer();
-      setTimeout(() => { state.tuning = false; tuneIn(); }, 550);
+      setTimeout(() => { state.tuning = false; tuneIn(); }, 800);
       return;
     }
+    state.tuneTries = 0;
     if (state.playing) {
       try { state.player.pauseVideo(); } catch (e) {}
       setPlaying(false);
       return;
     }
     const pos = radioNow(state.theme, state.epoch);
+    state.wantPlay = true;
     try {
-      state.player.loadVideoById({ videoId: pos.track.id, startSeconds: pos.offset });
+      state.player.unMute();
+      state.player.setVolume(vol());
+      state.lastLoadAt = Date.now();
+      state.player.loadVideoById({
+        videoId: pos.track.id,
+        startSeconds: Math.max(0, Math.floor(pos.offset))
+      });
       state.player.playVideo();
-      if (state.theme.volumeLock) state.player.setVolume(state.theme.volumeLock);
-      setPlaying(true);
     } catch (e) {
-      toast("Tap Tune in once more — the radio needs a nudge.");
+      toast("Tap the glowing radio once more.");
     }
   }
 
@@ -665,7 +748,7 @@
       return;
     }
     if (e.target.closest("#backBtn")) leave();
-    if (e.target.closest("#playBtn")) tuneIn();
+    if (e.target.closest("#playBtn") || e.target.closest("#playHint")) tuneIn();
     if (e.target.closest("#quoteBox")) nextQuote(false);
     if (e.target.closest("#nameBtn")) openNameModal();
     if (e.target.closest("#joinCodeBtn")) openJoin();

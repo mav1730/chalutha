@@ -29,7 +29,7 @@
   <canvas id="dust"></canvas>
   <div class="grain"></div>
   <div class="vignette"></div>
-  <div id="ytMount"></div>
+
   <div id="fx" aria-hidden="true">
     <div class="layer rain"></div>
     <div class="layer moths" id="moths"></div>
@@ -120,6 +120,10 @@
       <div class="widget hidden" id="tuneWidget"><div id="roomTune">No shop tune set.</div></div>
 
       <div class="player" aria-label="Shared room radio">
+        <div class="radio-face" id="radioFace">
+          <div id="ytMount"></div>
+          <button class="tune-hint" id="playHint" type="button">Tune in</button>
+        </div>
         <div class="cover" id="cover"></div>
         <div class="track">
           <div class="name" id="trackName">Already playing</div>

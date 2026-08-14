@@ -18,12 +18,8 @@ window.CHALU_THEMES = [
       { text: "Mirror mein mat dekh. Abhi aadha hi hua hai.", who: "Pappu Ustad" }
     ],
     tracks: [
-      { id: "PQks-zIcmB4", title: "Tere Naam", film: "Tere Naam", year: 2003, dur: 288, memory: "Every saloon. Every Sunday. Salman's hair, your hair." },
-      { id: "dU_N8BwqFJ4", title: "O Jaana", film: "Tere Naam", year: 2003, dur: 292, memory: "The one after Tere Naam that nobody requests and everybody knows." },
-      { id: "zDngjMYHSP8", title: "Dil Ne Yeh Kaha Hai Dil Se", film: "Dhadkan", year: 2000, dur: 344, memory: "Three voices. One broken radio. Hair on the floor." },
-      { id: "C5kihXiyHfE", title: "Aati Kya Khandala", film: "Ghulam", year: 1998, dur: 230, memory: "The barber laughs before the customer does." },
       { id: "Ki41AKu0iHc", title: "Pehla Nasha", film: "Jo Jeeta Wohi Sikandar", year: 1992, dur: 308, memory: "Slow motion. First crush. Clippers in 4/4." },
-      { id: "J2z_a0vLd-U", title: "Saloon staple", film: "The counter", year: 2000, dur: 286, memory: "You cannot name it. Your hands still know it." }
+      { id: "hw_HpTI_Wkw", title: "Ho Gaya Hai Tujhko", film: "DDLJ", year: 1995, dur: 310, memory: "Not Tujhe Dekha. The other one. The barber's favourite." }
     ]
   },
   {
@@ -46,11 +42,7 @@ window.CHALU_THEMES = [
       { text: "Main theek hoon. Tum kaise ho. Bas yahi poochna tha.", who: "One side only" }
     ],
     tracks: [
-      { id: "m6Y8xEfyXTs", title: "Main Yahaan Hoon", film: "Veer-Zaara", year: 2004, dur: 297, memory: "I'm still here. The other end is rain and silence." },
-      { id: "sK7riqg2mr4", title: "Agar Tum Saath Ho", film: "Tamasha", year: 2015, dur: 342, memory: "The call you made after you shouldn't have." },
-      { id: "L7r_roRQMl8", title: "Tere Naam (sad)", film: "Tere Naam", year: 2003, dur: 125, memory: "Two minutes. That's all the coin bought." },
-      { id: "g0eO74UmRBs", title: "Kal Ho Naa Ho", film: "Kal Ho Naa Ho", year: 2003, dur: 288, memory: "Tomorrow this number may not work." },
-      { id: "mt9xg0mmt28", title: "Tum Se Hi", film: "Jab We Met", year: 2007, dur: 258, memory: "You said nothing. The radio said it for you." }
+      { id: "m6Y8xEfyXTs", title: "Main Yahaan Hoon", film: "Veer-Zaara", year: 2004, dur: 297, memory: "I'm still here. The other end is rain and silence." }
     ]
   },
   {
@@ -73,10 +65,8 @@ window.CHALU_THEMES = [
       { text: "Winamp band kiya na? Bahar nikal.", who: "Owner" }
     ],
     tracks: [
-      { id: "ctJI7pCbxAo", title: "Koi Kahe Kehta Rahe", film: "Dil Chahta Hai", year: 2001, dur: 347, memory: "Orkut was loading. This was already playing." },
       { id: "PEhhfijaKxA", title: "It's the Time to Disco", film: "Kal Ho Naa Ho", year: 2003, dur: 330, memory: "Night pack. Equalizer on milk. Nobody sat still." },
-      { id: "70QpN7DvaK4", title: "Pretty Woman", film: "Kal Ho Naa Ho", year: 2003, dur: 330, memory: "The owner’s favourite. You were not asked." },
-      { id: "0h7PM11RKBU", title: "Night-pack dance reel", film: "PC-07", year: 2006, dur: 312, memory: "The unnamed .mp3 that survived three format-Cs." }
+      { id: "rap8SoUIPaw", title: "Dance Pe Chance", film: "Rab Ne Bana Di Jodi", year: 2008, dur: 255, memory: "The owner’s Winamp skin was milk. This was track 01." }
     ]
   },
   {
@@ -99,8 +89,6 @@ window.CHALU_THEMES = [
       { text: "Volume down. Principal ghum rahe hain.", who: "Monitor badge" }
     ],
     tracks: [
-      { id: "gyYBMapgzXE", title: "Jaane Kyon", film: "Dil Chahta Hai", year: 2001, dur: 289, memory: "First crush. Last bench. Paint still open." },
-      { id: "DwUgoUhgzLo", title: "You Are My Soniya", film: "K3G", year: 2001, dur: 355, memory: "Annual day rehearsal leaked into computer class." },
       { id: "ru_5PA8cwkE", title: "Mitwa", film: "Kabhi Alvida Naa Kehna", year: 2006, dur: 361, memory: "The whole lab pretended they weren't dancing in the chair." }
     ]
   },
@@ -124,9 +112,8 @@ window.CHALU_THEMES = [
       { text: "Hello, kaun? … pehle yeh tune suno.", who: "Demo Nokia" }
     ],
     tracks: [
-      { id: "2drIKUOCZxU", title: "Aankhon Mein Teri Ajab Si", film: "Om Shanti Om", year: 2007, dur: 20, memory: "The most set caller tune in this country. Then it vanished." },
-      { id: "BadBAMnPX0I", title: "Pehli Nazar Mein", film: "Race", year: 2008, dur: 20, memory: "You called just to hear it. You hung up before hello." },
-      { id: "aryz97joKOI", title: "Kya Mujhe Pyaar Hai", film: "Woh Lamhe", year: 2006, dur: 20, memory: "KK in 20 seconds. The whole shop went quiet." }
+      { id: "qoq8B8ThgEM", title: "Tujh Mein Rab Dikhta Hai", film: "RNBDJ", year: 2008, dur: 20, memory: "The 20 seconds India heard before anyone said hello." },
+      { id: "rap8SoUIPaw", title: "Dance Pe Chance", film: "RNBDJ", year: 2008, dur: 20, memory: "Missed call. You only needed the hook." }
     ]
   },
   {
@@ -149,9 +136,8 @@ window.CHALU_THEMES = [
       { text: "Amma chai le aayi. Ad ke baad gaana aayega.", who: "The sofa" }
     ],
     tracks: [
-      { id: "gI7hyn18Xn8", title: "Lag Ja Gale", film: "Woh Kaun Thi?", year: 1964, dur: 258, memory: "Sunday. Tube light. The whole house stopped talking." },
-      { id: "FD3vgLOEdgk", title: "Jaadu Teri Nazar", film: "Darr", year: 1993, dur: 300, memory: "Chitrahaar played the dangerous one and nobody changed the channel." },
-      { id: "cNV5hLSa9H8", title: "Tujhe Dekha Toh", film: "DDLJ", year: 1995, dur: 314, memory: "You have heard this ten thousand times. Today it arrives like the first." }
+      { id: "cNV5hLSa9H8", title: "Tujhe Dekha Toh", film: "DDLJ", year: 1995, dur: 314, memory: "Sunday. Tube light. The whole house stopped talking." },
+      { id: "jDErhADhhmg", title: "Phir Milenge Chalte Chalte", film: "RNBDJ", year: 2008, dur: 396, memory: "The second half of Sunday. Chai has gone cold." }
     ]
   },
   {
@@ -173,7 +159,6 @@ window.CHALU_THEMES = [
       { text: "Next station… kabhi to aayegi.", who: "The window" }
     ],
     tracks: [
-      { id: "-UwXrwWH4rY", title: "Kabhi Alvida Naa Kehna", film: "KANK", year: 2006, dur: 484, memory: "Someone on the side-upper is not going home." },
       { id: "L0zKs8i7Nc8", title: "Suraj Hua Maddham", film: "K3G", year: 2001, dur: 478, memory: "Window sodium lights. The song is too big for earphones." }
     ]
   },
@@ -196,9 +181,7 @@ window.CHALU_THEMES = [
       { text: "Yeh gaana tumhare baap ke time ka hai.", who: "Uncle" }
     ],
     tracks: [
-      { id: "hw_HpTI_Wkw", title: "Ho Gaya Hai Tujhko", film: "DDLJ", year: 1995, dur: 310, memory: "Not Tujhe Dekha. The other one. Uncle's favourite." },
-      { id: "ji8Z6VIshhQ", title: "Chand Sitare", film: "Humko Deewana Kar Gaye", year: 2006, dur: 286, memory: "He hums the second verse. You never learned it." },
-      { id: "fBylcT-TWZw", title: "Uncle's FM", film: "The counter", year: 1998, dur: 298, memory: "The radio faces him. You get the leftover frequencies." }
+      { id: "qoq8B8ThgEM", title: "Tujh Mein Rab Dikhta Hai", film: "RNBDJ", year: 2008, dur: 282, memory: "He hums the second verse. You never learned it." }
     ]
   },
   {
@@ -221,8 +204,7 @@ window.CHALU_THEMES = [
       { text: "Raat ko sirf emergency.", who: "The shutter" }
     ],
     tracks: [
-      { id: "dkTok8ikw_4", title: "Beete Lamhein", film: "The Train", year: 2007, dur: 300, memory: "KK at 2am. The fridge keeps time." },
-      { id: "XllMnMHdiLE", title: "Mitwa (soft)", film: "KANK", year: 2006, dur: 381, memory: "Same song as the school function. At this hour it is a different country." }
+      { id: "g0eO74UmRBs", title: "Kal Ho Naa Ho", film: "Kal Ho Naa Ho", year: 2003, dur: 288, memory: "The fridge keeps time. Tomorrow this shop may be closed." }
     ]
   },
   {
