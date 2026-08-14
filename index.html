@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHALU THA · Vol. IV — two chairs, one radio</title>
+  <meta name="description" content="A private gali of ten radios. Walk in with a friend. You both hear the same bar of the same song." />
+  <meta name="theme-color" content="#0c0806" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://mav1730.github.io/chalutha/" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="img/street.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CHALU THA · Vol. IV" />
+  <meta property="og:description" content="Two chairs. One radio. Walk into a 2000s Indian gali and jam with a friend." />
+  <meta property="og:image" content="https://mav1730.github.io/chalutha/img/street.jpg" />
+  <meta property="og:url" content="https://mav1730.github.io/chalutha/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CHALU THA · Vol. IV" />
+  <meta name="twitter:description" content="Two chairs. One radio." />
+  <meta name="twitter:image" content="https://mav1730.github.io/chalutha/img/street.jpg" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&family=Yatra+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <canvas id="dust"></canvas>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+  <div id="ytMount"></div>
+  <div id="fx" aria-hidden="true">
+    <div class="layer rain"></div>
+    <div class="layer moths" id="moths"></div>
+    <div class="layer steam" id="steam"></div>
+    <div class="layer fan"><div class="fan-rotor"></div></div>
+    <div class="layer twinkles" id="twinkles"></div>
+    <div class="layer fireflies" id="flies"></div>
+    <div class="layer sway"><div class="sway-hint"></div></div>
+  </div>
+
+  <section id="intro" class="screen is-on">
+    <div>
+      <div class="vol">Volume IV</div>
+      <h2>चालू था<small>Two chairs. One radio.</small></h2>
+    </div>
+  </section>
+
+  <section id="gali" class="screen">
+    <div class="bg"></div>
+    <header class="topbar">
+      <div><span class="dot"></span><span id="galiLive">open</span></div>
+      <div class="mark">Vol. IV</div>
+      <div id="galiClock">—</div>
+    </header>
+    <div class="hero">
+      <div class="kicker">The gali · ten frequencies</div>
+      <h1>चालू था<span>CHALU THA</span></h1>
+      <p class="tag">Walk into a shop. Invite a friend. <em>You both hear the same second.</em></p>
+      <div class="hero-actions">
+        <button class="btn gold" id="nameBtn" type="button">Your seat</button>
+        <button class="btn" id="joinCodeBtn" type="button">I have a booth code</button>
+      </div>
+    </div>
+    <div class="shops" id="shops"></div>
+  </section>
+
+  <section id="room" class="screen">
+    <div class="bg" id="roomBg"></div>
+    <div class="wash"></div>
+    <header class="room-top">
+      <div>
+        <button class="back" id="backBtn" type="button">← Gali</button>
+      </div>
+      <div class="room-id">
+        <div class="hi" id="roomHi">डीलक्स सैलून</div>
+        <div class="en" id="roomEn">Deluxe Saloon</div>
+      </div>
+    </header>
+
+    <div class="stage">
+      <div class="stats">
+        <span class="chip" id="ruleChip"></span>
+        <span class="chip" id="genreChip"></span>
+        <span class="chip" id="liveChip"></span>
+        <span class="chip" id="roomClock">—</span>
+      </div>
+
+      <div class="widget booth" id="booth">
+        <div class="seats">
+          <div class="seat on" id="seatMe">M</div>
+          <div class="seat empty" id="seatYou">+</div>
+          <div class="copy" id="boothCopy"><b>Public frequency</b><br />Anyone in this shop hears this bar.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="ghost" id="inviteBtn" type="button">Jam with a friend</button>
+          <div class="reacts" id="reacts">
+            <button type="button" data-react="🔥">🔥</button>
+            <button type="button" data-react="✂️">✂️</button>
+            <button type="button" data-react="☕">☕</button>
+            <button type="button" data-react="📞">📞</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="widget quote" id="quoteBox" type="button">
+        <p id="quoteText"></p>
+        <div class="who" id="quoteWho"></div>
+      </button>
+
+      <div class="widget hidden" id="coinWidget">
+        Coin left <strong id="coinLeft">3:00</strong>
+        <div class="who" id="coinStatus">The other person is silent.</div>
+      </div>
+      <div class="widget hidden" id="sessionWidget">
+        Night pack · time left <strong id="sessionLeft">60:00</strong>
+      </div>
+      <div class="widget hidden" id="chairWidget"><span id="chairLine">PC-01 is occupied</span></div>
+      <div class="widget hidden" id="tuneWidget"><div id="roomTune">No shop tune set.</div></div>
+
+      <div class="player" aria-label="Shared room radio">
+        <div class="cover" id="cover"></div>
+        <div class="track">
+          <div class="name" id="trackName">Already playing</div>
+          <div class="sub" id="trackSub"></div>
+          <div class="bar-row">
+            <span id="now">0:00</span>
+            <div class="bar" id="bar"><i id="fill"></i></div>
+            <span id="end">0:00</span>
+          </div>
+        </div>
+        <div class="acts">
+          <button class="icon play" id="playBtn" type="button" aria-label="Tune in">
+            <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="icon hidden" id="setTune" type="button" title="Set as shop caller tune">
+            <svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="rail" id="roomRail"></div>
+      <div class="yt-note">Shared radio via <a id="ytLink" href="https://youtube.com" target="_blank" rel="noopener">YouTube</a> · you cannot skip a shop radio</div>
+    </div>
+  </section>
+
+  <div id="shutter">
+    <div class="blade top"></div>
+    <div class="blade bot"></div>
+    <p>PLEASE COME IN</p>
+  </div>
+  <div id="blackout"><div><p>लाइट चली गई</p><small>generator laga</small></div></div>
+  <div id="bumper"><div class="card"><b>चित्रहार</b><p>Please do not adjust your set.</p></div></div>
+  <div id="toast"></div>
+
+  <div id="modal">
+    <div class="sheet" id="modalSheet"></div>
+  </div>
+
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="js/themes.js"></script>
+  <script src="js/app.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>

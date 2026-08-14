@@ -1,0 +1,12 @@
+{
+  "name": "CHALU THA",
+  "short_name": "CHALU THA",
+  "description": "Two chairs. One radio. A 2000s Indian gali of shared radios.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0c0806",
+  "theme_color": "#0c0806",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "chalutha",
+  "version": "4.0.0",
+  "private": true,
+  "description": "CHALU THA Vol. IV — two chairs, one radio. A nostalgic Indian gali of shared radios.",
+  "scripts": {
+    "start": "py -3 -m http.server 8765",
+    "start:npx": "npx --yes serve -l 8765"
+  },
+  "license": "MIT"
+}
