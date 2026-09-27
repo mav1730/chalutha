@@ -4,7 +4,7 @@
 
 A 2000s Indian gali of ten shops. Walk in. Invite a friend. You both hear the same second of the same song.
 
-**Live:** [mav1730.github.io/chalutha](https://mav1730.github.io/chalutha/)
+**Live:** [chalutha.vercel.app](https://chalutha.vercel.app/)
 
 ## How to jam
 
